@@ -107,7 +107,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 }
 
 // Read when the user picks a different folder to read images from
-func manageFolder(w http.ResponseWriter, r *http.Request) {
+func viewFolder(w http.ResponseWriter, r *http.Request) {
 	// This page should get PUT requests, so be cheeky for everything else
 	if r.Method != "POST" {
 		w.Write([]byte("\"" + folder + "\"\n\n"))
@@ -132,13 +132,27 @@ func manageFolder(w http.ResponseWriter, r *http.Request) {
 // Serve a single image (TODO maybe merge with manage folder?)
 func showImage(w http.ResponseWriter, r *http.Request) {
 
+	// What does the URL say?
 	file := r.URL.Path[8:]
 
-	// TODO
-	// Check that only the actual folder is accessible, not subfolders
-	// Check that the image actually exists, if not then use the 404 image
+	// No image is specified
+	if file == "" {
+		http.Redirect(w, r, "/folder", 303)
+		return
+	}
 
-	http.ServeFile(w, r, path.Join(folder, file))
+	// Check that the image is a real one
+	for _, f := range images {
+		if f == file {
+
+			// Serve the file
+			http.ServeFile(w, r, path.Join(folder, file))
+			return
+		}
+	}
+
+	// An invalid file was requested
+	http.ServeFile(w, r, "assets/404.jpg")
 }
 
 // Self explanatory
@@ -146,7 +160,7 @@ func runApp() {
 
 	// Specify the website resources
 	http.HandleFunc("/main", mainPage)
-	http.HandleFunc("/folder", manageFolder)
+	http.HandleFunc("/folder", viewFolder)
 	http.HandleFunc("/folder/", showImage)
 
 	// TODO make this just return the 404 image when the image cannot be found
