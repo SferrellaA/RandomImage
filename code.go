@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	folder string   // Holds the folder to check for images
-	images []string // Contains the list of valid images
+	folder   string   // Holds the folder to check for images
+	images   []string // Contains the list of valid images
+	lastHalf []int    // Contains the index of the last so many displayed images
 )
 
 // End the program if there is an error
@@ -39,19 +40,20 @@ func checkFolder(newFolder string) bool {
 // Change to a new folder of images
 func setFolder(newFolder string) {
 
-	// Empty current list of files
-	images = []string{}
+	// Update the folder variable
+	folder = newFolder
 
-	// Check that you can read files from the folder
+	// Update the location file
+	err := ioutil.WriteFile("./assets/images.location.txt", []byte(folder), 0644)
+	errFail(err)
 
-	if checkFolder(newFolder) {
-		folder = newFolder
-	} else {
-		return
-	}
-
+	// Read files in the new folder
 	files, err := ioutil.ReadDir(folder)
 	errFail(err)
+
+	// Empty current list of files
+	images = []string{}
+	lastHalf = []int{}
 
 	// Go over each file in the folder
 	for _, f := range files {
@@ -92,7 +94,30 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 	// Pick an image if there are images to pick from (otherwise 404)
 	file := "assets/404.jpg"
 	if len(images) > 0 {
-		file = images[rand.Int()%len(images)]
+
+		// Ensure a random image is random enough
+		i := 0
+		for {
+			i = rand.Int() % len(images)
+			for _, j := range lastHalf {
+				if i == j {
+					fmt.Println("\t", i)
+					i = -1
+					break
+				}
+			}
+			if i == -1 { // TODO find a better way to do this
+				continue
+			}
+			lastHalf = append(lastHalf, i)
+			if len(lastHalf) > len(images)/2 {
+				lastHalf = lastHalf[1:]
+			}
+			fmt.Println(i, lastHalf)
+			break
+		}
+
+		file = images[i]
 	}
 
 	// Read the code in page.htmland fill in variables as needed
@@ -108,12 +133,13 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 
 // Read when the user picks a different folder to read images from
 func viewFolder(w http.ResponseWriter, r *http.Request) {
-	// This page should get PUT requests, so be cheeky for everything else
+	// Show the contents of the current folder
 	if r.Method != "POST" {
-		w.Write([]byte("\"" + folder + "\"\n\n"))
+		w.Write([]byte("<html>\n<p>" + folder + "</p><pre>\n"))
 		for _, f := range images {
-			w.Write([]byte(f + "\n"))
+			w.Write([]byte("<a href=\"http://localhost:8080/folder/" + f + "\">" + f + "</a>\n"))
 		}
+		w.Write([]byte("</pre>\n</html>\n"))
 		return
 	}
 
@@ -123,13 +149,12 @@ func viewFolder(w http.ResponseWriter, r *http.Request) {
 	if checkFolder(nf[0]) {
 		setFolder(nf[0])
 	}
-	// TODO make a way to alert the user that an invalid directory is invalid
 
 	// Send the user back to the main page
 	http.Redirect(w, r, "main", 303)
 }
 
-// Serve a single image (TODO maybe merge with manage folder?)
+// Serve a single image
 func showImage(w http.ResponseWriter, r *http.Request) {
 
 	// What does the URL say?
@@ -186,12 +211,13 @@ func initApp() {
 		}
 	}
 
-	// Computers aren't random, they only pretend with math
-	rand.Seed(time.Now().UnixNano())
 }
 
 // Run everything
 func main() {
+
+	// Computers aren't random, they only pretend with math
+	rand.Seed(time.Now().UnixNano())
 
 	// Check and set things before starting the app
 	initApp()
