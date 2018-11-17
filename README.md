@@ -6,9 +6,9 @@ I don't know of such a tool, but I'm trying to learn about web stuff so I figure
 # TODO
 - Take better pictures of Leia the ferret
 - ~~Find/make better icons, give credit~~ 9 Nov 18
-- Split code across multiple files for readability
-  - Reorganize functions
-  - Also split css into a separate file
+- ~~Split code across multiple files for readability~~ 15 Nov 18
+  - ~~Reorganize functions~~ 16 Nov 18
+- Make html/css easier to read
 - ~~Make folder selection persistent~~ 14 Nov 18
 - ~~Better /folder view~~ 14 Nov 18
 - Is there a way to disable seeing pages in a browser?
@@ -18,7 +18,7 @@ I don't know of such a tool, but I'm trying to learn about web stuff so I figure
 - ~~Make less frequently repeated random images~~ 14 Nov 18
 - ~~Clean up the /folder and /folder/ handlers~~ 9 Nov 18
 - ~~Make 404 errors actually work~~ 9 Nov 18
-- Better comments/documentation
+- ~~Better comments/documentation~~ 16 Nov 18
 - Alert user when they've selected an invalid folder
 - Alert user when they've picked an empty folder (besides 404)
 
@@ -29,3 +29,4 @@ I don't know of such a tool, but I'm trying to learn about web stuff so I figure
 
 # CREDITS
 - The lovely refresh icon from [icons8](https://icons8.com/icon/42856/refresh)
+- The dice icon, also from [icons8](https://icons8.com/icon/16426/dice)
