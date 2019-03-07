@@ -42,17 +42,7 @@ func changeFolder(w http.ResponseWriter, r *http.Request) {
 
 	// Alert the user if the folder was not set
 	if !setFolder(nf[0]) {
-		w.Write([]byte("
-			<html>
-				<body onload=\"noFolder()\">
-					<script>
-						function noFolder() {
-							alert(\"Could not set " + nf[0] + " as directory\");
-						}
-					</script>
-				</body>
-			</html>
-		"))
+		w.Write([]byte("<html> <body onload=\"noFolder()\"> <script>function noFolder() { alert(\"Could not set " + nf[0] + " as directory\"); window.location = 'http://localhost:8080/main'; }</script> </body> </html>"))
 	}
 
 	// Send the user back to the main page
