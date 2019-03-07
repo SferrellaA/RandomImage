@@ -19,7 +19,7 @@ I don't know of such a tool, but I'm trying to learn about web stuff so I figure
 - ~~Clean up the /folder and /folder/ handlers~~ 9 Nov 18
 - ~~Make 404 errors actually work~~ 9 Nov 18
 - ~~Better comments/documentation~~ 16 Nov 18
-- Alert user when they've selected an invalid folder
+- ~~Alert user when they've selected an invalid folder~~ 6 Mar 19
 - Alert user when they've picked an empty folder (besides 404)
 
 # EVENTUAL GOALS
