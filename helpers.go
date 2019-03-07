@@ -22,7 +22,8 @@ func setFolder(newFolder string) bool {
 
 	// Check that the new folder is actually valid
 	if _, err := os.Stat(newFolder); os.IsNotExist(err) {
-		// TODO alert user that directory is invalid
+
+		// Directory is invalid
 		return false
 	}
 
@@ -50,6 +51,7 @@ func setFolder(newFolder string) bool {
 		}
 	}
 
+	// Directory is valid
 	return true
 }
 

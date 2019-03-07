@@ -40,8 +40,19 @@ func changeFolder(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	nf := r.Form["folder"]
 
-	// TODO alert the user the folder was not set
+	// Alert the user if the folder was not set
 	if !setFolder(nf[0]) {
+		w.Write([]byte("
+			<html>
+				<body onload=\"noFolder()\">
+					<script>
+						function noFolder() {
+							alert(\"Could not set " + nf[0] + " as directory\");
+						}
+					</script>
+				</body>
+			</html>
+		"))
 	}
 
 	// Send the user back to the main page
