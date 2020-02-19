@@ -1,7 +1,5 @@
 # ABOUT
-A friend of mine asked if I knew of a tool that could randomly pick an image from a given folder.
-They teach a foreign language class, and wanted to randomly pick an image prompt for their students to have conversations about.
-I don't know of such a tool, but I'm trying to learn about web stuff so I figured I'd just make something with webview.
+A friend of mine asked if I knew of a tool that could randomly pick an image from a given folder. The friend teaches a foreign language class, and wanted a tool to randomly pick an image prompt for their students to have conversations about. I didn't know of such a tool, so decided to make something with webview.
 
 # TODO
 - Take better pictures of Leia the ferret
